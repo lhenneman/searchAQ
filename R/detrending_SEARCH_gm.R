@@ -153,7 +153,7 @@ detrending_SEARCH_gm <- function(n,
   season <- getSeason( dates.nold)
 
   #interaction variables - weekdays and months with temp
-  weekdays_tempM <- model.matrix( ~ weekdays.name - 1) * met.ly$temp_M
+  weekdays_tempM <- model.matrix( ~ weekdays.name - 1) * met.ly$temp_max
   colnames(weekdays_tempM) <- revalue( colnames( weekdays_tempM),c( weekdays.nameMon = 'Mon_tempM',
                                                                     weekdays.nameTue = 'Tue_tempM',
                                                                     weekdays.nameWed = 'Wed_tempM',
@@ -161,7 +161,7 @@ detrending_SEARCH_gm <- function(n,
                                                                     weekdays.nameFri = 'Fri_tempM',
                                                                     weekdays.nameSat = 'Sat_tempM',
                                                                     weekdays.nameSun = 'Sun_tempM'))
-  month_tempM <- model.matrix( ~ month - 1) * met.ly$temp_M
+  month_tempM <- model.matrix( ~ month - 1) * met.ly$temp_max
   colnames(month_tempM) <- revalue( colnames( month_tempM),c(monthApr = 'Apr_tempM',
                                                              monthAug = 'Aug_tempM',
                                                              monthDec = 'Dec_tempM',
@@ -196,8 +196,8 @@ detrending_SEARCH_gm <- function(n,
   colnames( met.mkz.delt.sq) <- paste( colnames( met.mkz.delt), 'cu', sep = '_')
 
   #temperature and delta interaction variables
-  temp_deltTM <- met.ly$temp_M * met.mkz$temp_M$delt
-  temp_deltRH <- met.ly$temp_M * met.mkz$rh_md$delt
+  temp_deltTM <- met.ly$temp_max * met.mkz$temp_max$delt
+  temp_deltRH <- met.ly$temp_max * met.mkz$rh_midday$delt
 
   #=====# create data frame and run regression #=====#
   weekdays.name.mat <- model.matrix( ~ weekdays.name - 1)
@@ -207,9 +207,9 @@ detrending_SEARCH_gm <- function(n,
                        temp_deltRH,		weekdays.name.mat,	months.name.mat,
                        holidays, 			holidays1,			days)
   covars.rmnm <- na.omit( covars)
-  covars.keep <- c( 'temp_md', 'temp_md_sq', 'temp_md_cu', 'temp_deltTM', 'temp_deltRH',
-                    'ws_md', 'rh_md', 'rf_fac', 'temp_md_p1', 'ws_md_p1', 'rh_md_p1', 'rf_fac_p1',
-                    'temp_md_p2', 'ws_md_p2', 'rh_md_p2', 'rf_fac_p2', colnames( weekdays_tempM),
+  covars.keep <- c( 'temp_midday', 'temp_midday_sq', 'temp_midday_cu', 'temp_deltTM', 'temp_deltRH',
+                    'ws_midday', 'rh_midday', 'rf_fac', 'temp_midday_p1', 'ws_midday_p1', 'rh_midday_p1', 'rf_fac_p1',
+                    'temp_midday_p2', 'ws_midday_p2', 'rh_midday_p2', 'rf_fac_p2', colnames( weekdays_tempM),
                     colnames( weekdays.name.mat), colnames( months.name.mat), 'holidays', 'holidays1')
   covars.min  <- c( colnames( weekdays_tempM), colnames( weekdays.name.mat), colnames( months.name.mat))
   #RF, RFp1, RFp2
@@ -219,9 +219,9 @@ detrending_SEARCH_gm <- function(n,
   STM_xs <- step( STM_x, direct = c('both'), k = 3.84, trace = 0)
 
   #estimate weekday-holiday (WH) fit to remove it
-  covars.stm <- c( "(Intercept)",'temp_md','temp_md_sq','temp_md_cu','temp_deltTM','temp_deltRH',
-                   'ws_md','rh_md','rf_fac','temp_md_p1','ws_md_p1','rh_md_p1','temp_md_p2','ws_md_p2',
-                   'rh_md_p2','rf_fac_p1','rf_fac_p2')
+  covars.stm <- c( "(Intercept)",'temp_midday','temp_midday_sq','temp_midday_cu','temp_deltTM','temp_deltRH',
+                   'ws_midday','rh_midday','rf_fac','temp_midday_p1','ws_midday_p1','rh_midday_p1','temp_midday_p2','ws_midday_p2',
+                   'rh_midday_p2','rf_fac_p1','rf_fac_p2')
   covars.wh <- names( coef(STM_xs))[names( coef( STM_xs)) %ni% covars.stm]
   WH_xvec <- rep( NA, length( holidays))
   WH_xvec[covars.rmnm$days] <- c( subfitter( coef( STM_xs)[names( coef( STM_xs)) %in% covars.wh], covars.rmnm[,covars.wh]))
