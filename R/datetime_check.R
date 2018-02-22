@@ -10,7 +10,12 @@
 
 datetime_check <- function( dataf,
                             hourday = 'hour'){
-  if ( hourday == 'hour') form = '%F %T' else form = '%F'
+  if ( hourday == 'hour') {
+    form = '%F %T'
+    } else {
+      form = '%F'
+      dataf$date <- as.Date( dataf$date)
+    }
 
   dataf <- dataf[order( dataf$date),]
   if ( length( which( is.na( dataf$date) == T)) > 0 )
