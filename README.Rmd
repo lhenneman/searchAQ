@@ -5,11 +5,13 @@ in its original format and combine it into consistent lists and data frames. Oth
 functions perform detrending and calculate photochemical state from observations.
 
 # Getting started
-Download all SEARCH data from Dropbox, using one of these two links:
+Download all SEARCH data from Dropbox, using one of these two links (the first
+is still hosted by ARA, the second is hosted on my own Dropbox):
 1) https://www.dropbox.com/sh/o9hxoa4wlo97zpe/AACbm6LetQowrpUgX4vUxnoDa?dl=0
 2) https://www.dropbox.com/sh/1tsdqdmiwixbgfd/AACxwbKilNVbC52H1VH4geJma?dl=0
 
-Maintain the original structure, with directories named for each year.
+Download the entire directory, maintaining the original structure.
+You should end up with a single SEARCH directory with subdirectories named for each year.
 
 ### Install ```searchAQ```
 In R or RStudio, install the ```searchAQ``` R package from github.  
@@ -132,7 +134,7 @@ JSTmetrics$ion[JSTmetrics$ion <= 0] <- NA
 
 The ```detrending_SEARCH_gm``` function can then be used to detrend each species:
 ```{r}
-JSTdetrending.gas.o3_md8a <- detrending_SEARCH_gm( n = "o3_md8a",
+JSTdetrending.gas.o3_md8a <- detrending_SEARCH_gm( n = "o3_mda8",
                                                    x.df = JSTmetrics$gas,
                                                    met = JSTmetrics$met,
                                                    rf = data.frame( rainfall$ATL))
@@ -147,14 +149,15 @@ summary(JSTdetrending.gas.o3_md8a)
 # Det  5840   -none- numeric
 # r.sq    1   -none- numeric
 ```
-The result is a list with 7 objects:
+The result is a list with 2 objects. The second, r.sq: R^2 fit of reconstructed 
+signal (Table 3 in Henneman et al. (2015)). The first is a data.frame with the
+following columns:
 - date: a vector of dates
 - obs: osberved daily metrics input into detrending function
 - STM: short-term meteorology portion of signal
 - S: seasonal (annual) portion of signal
 - PS: photochemical state (PS from MDA8hO3 discussed in detail by Henneman et al. (2017))
 - Det: Meteorologically detrended data 
-- r.sq: R^2 fit of reconstructed signal (Table 3 in Henneman et al. (2015))
 
 The detrending can easily be run for all species and metric combinations at a single site
 using ```sapply```:
