@@ -54,7 +54,7 @@ metrics_worker <- function(x,
     }
     Z.which <- unlist( apply( Z, 2, max_fun))
 
-    Z.8h <- mean.which8h( Z, Z.which)
+    Z.8h <- mean_which8h( Z, Z.which)
     out <- unlist( Z.8h)
 
   } else {
@@ -99,6 +99,6 @@ metrics_worker <- function(x,
     }
     out <- unlist( Z.mean)
   }
-  retun( out)
+  return( out)
 }
 
