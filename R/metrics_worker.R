@@ -18,30 +18,10 @@
 #			values denote how many hours before midnight data starts
 #' @return This function returns a vector of daily metrics
 
-#==================================================================================================
-#
-#		Function to calculate daily metrics from hourly inputs
-#
-#		start.hour defines which hour data starts on, default is zero
-#			values denote how many hours before midnight data starts
-#
-#			metrics:
-#				mda8 - mean daily 8 hr average
-#				afternoon - afternoon average ()
-#				mean
-#				sum
-#				midday
-#				morning
-#				max
-#				2p
-#==================================================================================================
-
-
-#define function with inputs of hourly measurements and metric of interest
-#output is a daily vector
 metrics_worker <- function(x,
                            metric,
-                           start.hour = 0){
+                           datehour,
+                           species = NULL){
   try( if( metric %ni% c( 'mda8',
                           'afternoon',
                           'mean',
@@ -52,10 +32,13 @@ metrics_worker <- function(x,
                           '2p'))
     stop('choose a real metric'))
 
+  start.hour <- hour( min( datehour))
+
   #trim data from hours before/after 0
   if ( start.hour != 0){
     length.x <- length( x)
     x <- x[-c( 1:start.hour)]
+    datehour <- datehour[-c( 1:start.hour)]
     x[( length( x) + 1):length.x] <- NA
   }
 
@@ -75,7 +58,7 @@ metrics_worker <- function(x,
     Z.which <- unlist( apply( Z, 2, max_fun))
 
     Z.8h <- mean_which8h( Z, Z.which)
-    out <- unlist( Z.8h)
+    out1 <- unlist( Z.8h)
 
   } else {
     Z.mean <- rep( NA, nday)
@@ -117,8 +100,14 @@ metrics_worker <- function(x,
         Z.mean[d] <- mean( x[h], na.rm = T)
       }
     }
-    out <- unlist( Z.mean)
+    out1 <- unlist( Z.mean)
   }
+
+  date.unique <- unique(as.Date( datehour, tz = ''))
+  name <- paste( species, metric, sep = '_')
+  out <- data.frame( date = date.unique,
+                     metric = out1)
+  names(out) <- c('date', name)
   return( out)
 }
 
