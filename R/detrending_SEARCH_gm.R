@@ -259,12 +259,12 @@ detrending_SEARCH_gm <- function(n,
   ps <- x.S + x.raw - x.det
 
   #=====# create object to save #=====#
-  out = list(date = dates.nold,
-             obs = x.raw,
-             STM = STM_xvec,
-             S = x.mkz$Scomplete,
-             PS = ps,
-             Det = x.det,
+  out = list(data = data.frame( date = dates.nold,
+                                obs = x.raw,
+                                STM = STM_xvec,
+                                S = x.mkz$Scomplete,
+                                PS = ps,
+                                Det = x.det),
              r.sq = corr.x.fit)
 
   return( out)
