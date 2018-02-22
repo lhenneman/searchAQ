@@ -22,10 +22,10 @@ input_NCDC_CDO_rf <- function( file){
 
   #fill missing dates with NA
   rf.df <- data.frame(	date = rf.date,
-                       GFP  = fill_dates(rf.data,'GFP', rf.date),
-                       PNS  = fill_dates(rf.data,'PNS', rf.date),
-                       BHM  = fill_dates(rf.data,'BHM', rf.date),
-                       ATL  = fill_dates(rf.data,'ATL', rf.date))
+                       GFP  = fill_dates(rf.data, 'GFP', rf.date),
+                       PNS  = fill_dates(rf.data, 'PNS', rf.date),
+                       BHM  = fill_dates(rf.data, 'BHM', rf.date),
+                       ATL  = fill_dates(rf.data, 'ATL', rf.date))
 
   #combine into list, export
   stations.names.short <- c('GFP','PNS','BHM','ATL')
