@@ -52,13 +52,13 @@ dailymetrics_SEARCH_gm <- function(input){
                             metrics_worker( input[['ion']]$nh4, '2p', datehour = ion.datehour, species = 'nh4')),
                       by = 'date')
 
-  Met.df <- join_all( list( rh_md = metrics_worker( input[['met']]$rh, 'midday', datehour = met.datehour, species = 'rh'),
-                            sr_s  = metrics_worker( input[['met']]$sr, 'sum', datehour = met.datehour, species = 'sr'),
-                            sr_M  = metrics_worker( input[['met']]$sr, 'max', datehour = met.datehour, species = 'sr'),
-                            ws_md = metrics_worker( input[['met']]$ws, 'midday', datehour = met.datehour, species = 'ws'),
-                            ws_morn=metrics_worker( input[['met']]$ws, 'morning', datehour = met.datehour, species = 'ws'),
-                            temp_md=metrics_worker( input[['met']]$temp, 'midday', datehour = met.datehour, species = 'temp'),
-                            temp_M= metrics_worker( input[['met']]$temp, 'max', datehour = met.datehour, species = 'temp')),
+  Met.df <- join_all( list( metrics_worker( input[['met']]$rh, 'midday', datehour = met.datehour, species = 'rh'),
+                            metrics_worker( input[['met']]$sr, 'sum', datehour = met.datehour, species = 'sr'),
+                            metrics_worker( input[['met']]$sr, 'max', datehour = met.datehour, species = 'sr'),
+                            metrics_worker( input[['met']]$ws, 'midday', datehour = met.datehour, species = 'ws'),
+                            metrics_worker( input[['met']]$ws, 'morning', datehour = met.datehour, species = 'ws'),
+                            metrics_worker( input[['met']]$temp, 'midday', datehour = met.datehour, species = 'temp'),
+                            metrics_worker( input[['met']]$temp, 'max', datehour = met.datehour, species = 'temp')),
                       by = 'date')
 
 
