@@ -1,4 +1,4 @@
-## ```searchAQ```
+# ```searchAQ```
 
 ```searchAQ``` is an R package that includes utility to read in SEARCH air quality network data
 in its original format and combine it into consistent lists and data frames. Other included 
@@ -33,7 +33,8 @@ For Jefferson Street, for example:
 ```{r}
 JSTdata <- read_SEARCH('JST',loc.search)
 ```
-Where ```loc.serach``` is the local path of your SEARCH data.
+Where ```loc.serach``` is the local path of your SEARCH data (i.e., the directory
+that contains subdirectories named for each year).
 ```JSTdata``` will have the structure of a list containing hourly
 gas, meteorology, and ion measurements, and daily PM2.5:
 
@@ -44,6 +45,7 @@ summary(JSTdata)
 # met 8      data.frame list
 # pm  2      data.frame list
 # ion 4      data.frame list
+
 summary(JSTdata$gas[, 1:4])
 #      date                           o3                co              so2         
 # Min.   :1998-07-31 20:00:00   Min.   : -3.487   Min.   :-829.0   Min.   : -0.766  
@@ -57,8 +59,36 @@ summary(JSTdata$gas[, 1:4])
 ```
 
 ## Creating daily metrics
+The ```metrics_worker``` utility calculates daily metrics from hourly concentrations.
+For example,
+```{r}
+o3_md8a <- metrics_worker( x = JSTdata$gas$o3, metric = 'mda8', datehour = JSTdata$gas$date, species = 'o3')
 
+summary( o3_md8a)
+#      date               o3_mda8         
+# Min.   :1998-08-01   Min.   :  0.03817  
+# 1st Qu.:2002-09-08   1st Qu.: 26.81612  
+# Median :2006-10-16   Median : 38.39598  
+# Mean   :2006-10-16   Mean   : 41.09705  
+# 3rd Qu.:2010-11-23   3rd Qu.: 53.73363  
+# Max.   :2014-12-31   Max.   :130.81412  
+#                      NA's   :80         
+```
 
+```dailymetrics_SEARCH_gm``` is a built in function to calculate various daily metrics of all of the
+species included in output from ```read_SEARCH```
+```{r}
+JSTmetrics <- dailymetrics_SEARCH_gm( JSTdata)
+
+summary( JSTmetrics)
+#     Length Class      Mode
+# gas 26     data.frame list
+# met  8     data.frame list
+# pm   2     data.frame list
+# ion  7     data.frame list
+```
+
+## Detrending
 
 
 
