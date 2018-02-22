@@ -1,6 +1,10 @@
-#==================================================#
-#read input rainfall data
-#==================================================#
+#' read input rainfall data
+#'
+#' \code{input_NCDC_CDO_rf} takes as input a csv file and reads the rainfall data
+#'
+#' @param file csv file of rainfall data from NCDC airport - can be downloaded here:
+#' https://www.ncdc.noaa.gov/cdo-web/orders?email=lhenneman@gmail.com&id=875479
+#' @return This function returns a list of dates and rainfall amounts for each location
 
 input_NCDC_CDO_rf <- function( file){
   #import data file

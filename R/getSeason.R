@@ -1,3 +1,10 @@
+#' Return season for given dates
+#'
+#' \code{getSeason} takes as input a vector of dates and returns the season
+#'
+#' @param DATES vector of dates
+#' @return A vector of seasons for each date
+
 
 #===============================================================#
 # Return season for given dates

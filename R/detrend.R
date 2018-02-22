@@ -1,31 +1,17 @@
-
-################################################################################################
-#
-#
-#				Script to detrend met data (input is daily values e.g.from MetVeraging.R)
-#				with KZ filter, then average output over 365 days
-#
-#				Uses the KZ(365,3) and KZ(15,5) filters
-#
-#				Make sure to edit fd and Y
-#				year1 = starting year
-#				fd = first day of signal (e.g. January 1st is monday, enter "2")
-#				met = TRUE/FALSE meteorological or not
-#				log = TRUE/FALSE use the log of the signal or not
-#				raw = TRUE/FALSE returns raw signal, minus leap days (and filling missing days)
+#' detrend SEARCH data
+#'
+#' \code{detrend} Script to detrend met data (input is daily values e.g.from MetVeraging.R)
+#				with KZ filter, then average output over 365 days. Uses the KZ(365,3) and KZ(15,5) filters
+#'
+#' @param signal vector of daily obsevations
+#' @param year1 starting year
+#' @param log TRUE/FALSE use the log of the signal or not
+#' @param raw TRUE/FALSE returns raw signal, minus leap days (and filling missing days)
 #					-both fns return same value for this
-#				is.leap.year = use FALSE if signal contains leap days
-#
-#
-#				Lucas Henneman
-#				October 2013
-#
-#
-#
-#################################################################################################
-
-
-
+#' @param fill TRUE/FALSE fill missing values?
+#' @param is.leap.year use FALSE if \code{signal} contains leap days
+#' @param start.date in date format, first day of the signal. Leave as default for start dates on 1 January
+#' @return This function returns a list of daily detrended components
 
 detrend <- function(signal,
                         year1,

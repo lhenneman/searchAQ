@@ -1,3 +1,23 @@
+#' calculate daily metrics from hourly inputs
+#'
+#' \code{dailymetrics_SEARCH_gm} takes as input a list of hourly gas, meteorology (met), pm2.5 (pm)
+#' and ion species concentrations (e.g., from the \code{read_SEARCH} function) and outputs a list of
+#' daily gas, met, pm, and ion species. Multiple daily metrics are taken for each species
+#'
+#' @param metric string, one of:
+#' #'\enumerate{
+#'   \item mda8 - mean daily 8 hr average
+#'   \item afternoon - afternoon average
+#'   \item sum
+#'   \item midday
+#'   \item morning
+#'   \item max
+#'   \item 2p
+#' }
+#' @param start.hour defines which hour data starts on, default is zero
+#			values denote how many hours before midnight data starts
+#' @return This function returns a vector of daily metrics
+
 #==================================================================================================
 #
 #		Function to calculate daily metrics from hourly inputs

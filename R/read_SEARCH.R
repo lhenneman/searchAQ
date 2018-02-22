@@ -1,3 +1,12 @@
+#' read SEARCH data in native formats
+#'
+#' \code{read_SEARCH} takes as input a site abbreviation and a directory location and
+#' returns a list of hourly gas, meteorology (met), pm2.5 (pm) and ion species concentrations
+#'
+#' @param site one of c('GFP', 'PNS', 'BHM', 'JST', 'YRK', 'CTR', 'OLF', 'OAK')
+#' @param loc.search File directory that contains SEARCH datasets
+#' @return This function returns a list of hourly gas, meteorology (met), and ion species concentrations, and
+#' daily PM2.5 concentrations (pm)
 
 read_SEARCH <- function( site,
                          loc.search){

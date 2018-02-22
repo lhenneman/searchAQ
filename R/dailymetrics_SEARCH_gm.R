@@ -1,3 +1,12 @@
+#' read SEARCH data in native formats
+#'
+#' \code{dailymetrics_SEARCH_gm} takes as input a list of hourly gas, meteorology (met), pm2.5 (pm)
+#' and ion species concentrations (e.g., from the \code{read_SEARCH} function) and outputs a list of
+#' daily gas, met, pm, and ion species. Multiple daily metrics are taken for each species
+#'
+#' @param input list of hourly gas, meteorology (met), pm2.5 (pm)
+#' and ion species concentrations (e.g., from the \code{read_SEARCH} function)
+#' @return This function returns a list of daily gas, met, pm, and ion species
 
 dailymetrics_SEARCH_gm <- function(input){
 

@@ -1,9 +1,13 @@
-#==================================================#
-# Descirbe detrending function
-#	based on regressions_species functions
-#	detrending function shortens time series to complete years
+#' detrend into longterm, seasonal, short-term meteorology, weekly, and white noise
+#'
+#' \code{detrending_SEARCH_gm} detrending function shortens time series to complete years
 #		to limit skewing on ends of KZ-filtered time series
-#==================================================#
+#'
+#' @param n name of column in x.df for detrending
+#' @param x.df dataframe of daily pollutant observation metrics and dates
+#' @param met dataframe of daily meteorology observation metrics and dates
+#' @param rf dataframe of daily rainfall
+#' @return This function returns a list of dates, observed values, STM, seasonal, PS, Detrended, and fit R^2
 
 detrending_SEARCH_gm <- function(n,
                                  x.df,

@@ -1,15 +1,13 @@
-#==================================================================================================
-#
-#					Functions to compute best fit of subset of a linear model
-#
-#					Order of covars should match coefs
-#
-#==================================================================================================
+#' compute fit of subset of a linear model
+#'
+#' \code{subfitter} takes as input a dataframe and vector of named covariates, multiplies by each and sums the results
+#'
+#' @param coeffs vector of named coefficients, e.g., from a linear model
+#' @param covars data.frame of covariates, including those named in coeffs
+#' @return This function returns a vector of fits
 
-##more flexible version that matches coefs name to covars
 subfitter <- function( coeffs,
-                       covars,
-                       na = TRUE){
+                       covars){
 
   if ( is.null( dim( covars)) == T){
     fit.tot = coeffs * covars
@@ -26,7 +24,5 @@ subfitter <- function( coeffs,
       fit.tot <- covars.fit %*% coeffs
     }
   }
-
-
   return( fit.tot)
 }

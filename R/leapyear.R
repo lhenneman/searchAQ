@@ -1,19 +1,19 @@
-################################################################################################
-#
-#
+#' remove leapdays
+#'
+#' \code{leapyear} takes as input a vector of daily values and removes leapdays
+#'
+#' @param signal vector of daily values
+#' @param year1 starting year
+#' @param fill TRUE/FALSE to fill NA values with mean of that day of year
+#' @param start.date in date format, first day of the signal. Leave as default for start dates on 1 January
+#' @return This function returns a vector with leapdays removed
+
 #				Function to remove the leap days from a signal
 #
 #				year1 = starting year
 #				fill = TRUE/FALSE to fill NA values with mean of that day of year
 #				met = TRUE/FALSE meteorological or not
 #				log = TRUE/FALSE use the log of the signal or not
-#
-#				Lucas Henneman
-#				December 2012
-#
-#
-#
-#################################################################################################
 
 leapyear <- function(signal,
                      year1,
