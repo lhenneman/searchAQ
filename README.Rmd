@@ -1,28 +1,35 @@
----
-title: "README"
-output: html_document
----
+## ```searchAQ```
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```searchAQ``` is an R package that includes utility to read in SEARCH air quality network data
+in its original format and combine it into consistent lists and data frames. Other included 
+functions perform detrending and calculate photochemical state from observations.
+
+## Getting started
+Download all SEARCH data from Dropbox, using one of these two links:
+1) https://www.dropbox.com/sh/o9hxoa4wlo97zpe/AACbm6LetQowrpUgX4vUxnoDa?dl=0
+2) https://www.dropbox.com/sh/1tsdqdmiwixbgfd/AACxwbKilNVbC52H1VH4geJma?dl=0
+
+Maintain the original structure, with directories named for each year.
+
+### Install ```searchAQ```
+In R or RStudio, install the ```searchAQ``` R package from github.  
+
+#### Install and load ```devtools```
+```
+install.packages( c('devtools'))
+library(devtools)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+#### Install and load ```searchAQ```
+```{r}
+devtools::install_github("lhenneman/searchAQ")
+library(searchAQ)
 ```
 
-## Including Plots
+## Reading the data
+searchAQ relies on the original file formats for SEARCH data, which change in different years (2008,
+for example, was a big change)
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
