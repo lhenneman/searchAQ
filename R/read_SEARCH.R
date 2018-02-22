@@ -218,7 +218,7 @@ read_SEARCH <- function( site,
   }
 
   rows.pm25 <- imports.pm[,grep( 'FRM.Mass|PM2.5.Mass..ug.m3.|X.FRM.PM2.5.Mass..ug.m3.', colnames( imports.pm))]
-  PM.df <- data.frame( date = strptime( dates.pm, format = '%F'),
+  PM.df <- data.frame( date = dates.pm,
                        pm25 = rowSums( rows.pm25, na.rm = T) *
                          ifelse( rowSums( is.na( rows.pm25)) == ncol( rows.pm25), NA, 1))
 
