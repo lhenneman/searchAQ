@@ -62,7 +62,10 @@ summary(JSTdata$gas[, 1:4])
 The ```metrics_worker``` utility calculates daily metrics from hourly concentrations.
 For example,
 ```{r}
-o3_md8a <- metrics_worker( x = JSTdata$gas$o3, metric = 'mda8', datehour = JSTdata$gas$date, species = 'o3')
+o3_md8a <- metrics_worker( x = JSTdata$gas$o3, 
+                           metric = 'mda8', 
+                           datehour = JSTdata$gas$date, 
+                           species = 'o3')
 
 summary( o3_md8a)
 #      date               o3_mda8         
@@ -74,6 +77,18 @@ summary( o3_md8a)
 # Max.   :2014-12-31   Max.   :130.81412  
 #                      NA's   :80         
 ```
+
+The ```metric``` option in ```metrics_worker``` has multiple potential values corresponding to 
+potentially useful daily metrics (more can be added later):
+- mda8 - maximum daily 8 hr average
+- afternoon - mean of hourly values from 11am-7pm
+- sum - sum of hourly values
+- midday - mean of hourly values from 11am-3pm
+- morning - mean of hourly values from 8am-11pm
+- max - 24h maximum
+- 2p - 2pm hourly value
+
+
 
 ```dailymetrics_SEARCH_gm``` is a built in function to calculate various daily metrics of all of the
 species included in output from ```read_SEARCH```
