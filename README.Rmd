@@ -27,8 +27,37 @@ library(searchAQ)
 ```
 
 ## Reading the data
-searchAQ relies on the original file formats for SEARCH data, which change in different years (2008,
-for example, was a big change)
+searchAQ relies on the original file formats for SEARCH data, which change 
+in different years (2008, for example, saw a big change in file format).
+For Jefferson Street, for example:
+```{r}
+JSTdata <- read_SEARCH('JST',loc.search)
+```
+Where ```loc.serach``` is the local path of your SEARCH data.
+```JSTdata``` will have the structure of a list containing hourly
+gas, meteorology, and ion measurements, and daily PM2.5:
+
+```{r}
+summary(JSTdata)
+#     Length Class      Mode
+# gas 9      data.frame list
+# met 8      data.frame list
+# pm  2      data.frame list
+# ion 4      data.frame list
+summary(JSTdata$gas[, 1:4])
+#      date                           o3                co              so2         
+# Min.   :1998-07-31 20:00:00   Min.   : -3.487   Min.   :-829.0   Min.   : -0.766  
+# 1st Qu.:2002-09-08 01:45:00   1st Qu.:  8.153   1st Qu.: 192.8   1st Qu.:  0.490  
+# Median :2006-10-16 07:30:00   Median : 21.627   Median : 254.2   Median :  1.381  
+# Mean   :2006-10-16 07:30:00   Mean   : 25.019   Mean   : 377.5   Mean   :  3.533  
+# 3rd Qu.:2010-11-23 12:15:00   3rd Qu.: 36.582   3rd Qu.: 380.5   3rd Qu.:  3.710  
+# Max.   :2014-12-31 18:00:00   Max.   :167.186   Max.   :7687.5   Max.   :129.454  
+#                               NA's   :5848      NA's   :8651     NA's   :8922     
+
+```
+
+## Creating daily metrics
+
 
 
 
