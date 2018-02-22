@@ -4,7 +4,7 @@
 in its original format and combine it into consistent lists and data frames. Other included 
 functions perform detrending and calculate photochemical state from observations.
 
-## Getting started
+# Getting started
 Download all SEARCH data from Dropbox, using one of these two links:
 1) https://www.dropbox.com/sh/o9hxoa4wlo97zpe/AACbm6LetQowrpUgX4vUxnoDa?dl=0
 2) https://www.dropbox.com/sh/1tsdqdmiwixbgfd/AACxwbKilNVbC52H1VH4geJma?dl=0
@@ -26,7 +26,7 @@ devtools::install_github("lhenneman/searchAQ")
 library(searchAQ)
 ```
 
-## Reading the data
+# Importing the data
 searchAQ relies on the original file formats for SEARCH data, which change 
 in different years (2008, for example, saw a big change in file format).
 For Jefferson Street, for example:
@@ -58,7 +58,7 @@ summary(JSTdata$gas[, 1:4])
 
 ```
 
-## Creating daily metrics
+# Creating daily metrics
 The ```metrics_worker``` utility calculates daily metrics from hourly concentrations.
 For example,
 ```{r}
@@ -101,7 +101,7 @@ summary( JSTmetrics)
 # ion  7     data.frame list
 ```
 
-## Detrending
+# Detrending
 ```searchAQ``` contains functions that allow for the detrending of SEARCH data (and potentially
 other daily data) using the methods described in Henneman et al. (2015). Splitting into 
 detrending components is acheived using the ```detrending_SEARCH_gm``` function. 
@@ -109,7 +109,7 @@ detrending components is acheived using the ```detrending_SEARCH_gm``` function.
 First, however, rainfall data needs to be downloaded and included. Potential future functionality
 could include the option to detrend without some variables, but these are all needed for now.
 
-#### Download and read in rainfall data
+### Download and read in rainfall data
 
 Airport rainfall data in the correct format can be downloaded here: 
 https://www.ncdc.noaa.gov/cdo-web/orders?email=lhenneman@gmail.com&id=875479 (click RESUBMIT).
@@ -121,7 +121,7 @@ rainfall <- input_NCDC_CDO_rf(file.rf)
 
 Where ```file.rf``` is the path of the rainfall file downloaded from NCDC.
 
-#### Do the detrending
+### Do the detrending
 First, it is recommended to discard all values of species metrics that are below zero
 (alternatively, you may decide to use some sort of filling procedure for these values).
 ```{r}
