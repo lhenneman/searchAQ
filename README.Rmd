@@ -180,7 +180,10 @@ JSTdetrending.pm <- sapply( nlist.pm,
 ```
 
 
+# References
+Henneman, Lucas RF, Heather A Holmes, James A Mulholland, and Armistead G Russell. 2015. “Meteorological Detrending of Primary and Secondary Pollutant Concentrations: Method Application and Evaluation Using Long-Term (2000-2012) Data in Atlanta.” Atmospheric Environment 119. Elsevier Ltd: 201–10. doi:10.1016/j.atmosenv.2015.08.007.
 
+Henneman, Lucas RF, Howard H Chang, David Lavoue, James A Mulholland, and Armistead G Russell. 2017. “Accountability Assessment of Regulatory Impacts on Ozone and PM2.5 Concentrations Using Statistical and Deterministic Pollutant Sensitivities.” Air Quality Atmosphere and Health 10 (6): 695–711. doi:10.1007/s11869-017-0463-2.
 
 
 
