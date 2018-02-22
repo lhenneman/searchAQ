@@ -132,7 +132,6 @@ JSTmetrics$ion[JSTmetrics$ion <= 0] <- NA
 
 The ```detrending_SEARCH_gm``` function can then be used to detrend each species:
 ```{r}
-# individually
 JSTdetrending.gas.o3_md8a <- detrending_SEARCH_gm( n = "o3_md8a",
                                                    x.df = JSTmetrics$gas,
                                                    met = JSTmetrics$met,
@@ -157,9 +156,9 @@ The result is a list with 7 objects:
 - Det: Meteorologically detrended data 
 - r.sq: R^2 fit of reconstructed signal (Table 3 in Henneman et al. (2015))
 
-The detrending can easily be run for all species and metric combinations at a single site:
+The detrending can easily be run for all species and metric combinations at a single site
+using ```sapply```:
 ```{r}
-# all species using sapply. First, list species
 nlist.gas = colnames(JSTmetrics$gas)[-1]
 nlist.pm  = colnames(JSTmetrics$pm)[-1]
 
