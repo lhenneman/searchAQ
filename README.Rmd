@@ -80,15 +80,13 @@ summary( o3_md8a)
 
 The ```metric``` option in ```metrics_worker``` has multiple potential values corresponding to 
 potentially useful daily metrics (more can be added later):
-- mda8 - maximum daily 8 hr average
-- afternoon - mean of hourly values from 11am-7pm
-- sum - sum of hourly values
-- midday - mean of hourly values from 11am-3pm
-- morning - mean of hourly values from 8am-11pm
-- max - 24h maximum
-- 2p - 2pm hourly value
-
-
+- 'mda8' - maximum daily 8 hr average
+- 'afternoon' - mean of hourly values from 11am-7pm
+- 'sum' - sum of hourly values
+- 'midday' - mean of hourly values from 11am-3pm
+- 'morning' - mean of hourly values from 8am-11pm
+- 'max' - 24h maximum
+- '2p' - 2pm hourly value
 
 ```dailymetrics_SEARCH_gm``` is a built in function to calculate various daily metrics of all of the
 species included in output from ```read_SEARCH```
@@ -104,6 +102,90 @@ summary( JSTmetrics)
 ```
 
 ## Detrending
+```searchAQ``` contains functions that allow for the detrending of SEARCH data (and potentially
+other daily data) using the methods described in Henneman et al. (2015). Splitting into 
+detrending components is acheived using the ```detrending_SEARCH_gm``` function. 
+
+First, however, rainfall data needs to be downloaded and included. Potential future functionality
+could include the option to detrend without some variables, but these are all needed for now.
+
+#### Download and read in rainfall data
+
+Airport rainfall data in the correct format can be downloaded here: 
+https://www.ncdc.noaa.gov/cdo-web/orders?email=lhenneman@gmail.com&id=875479 (click RESUBMIT).
+```input_NCDC_CDO_rf``` can then be used to read and format the data for detrending:
+
+```{r}
+rainfall <- input_NCDC_CDO_rf(file.rf)
+```
+
+Where ```file.rf``` is the path of the rainfall file downloaded from NCDC.
+
+#### Do the detrending
+First, it is recommended to discard all values of species metrics that are below zero
+(alternatively, you may decide to use some sort of filling procedure for these values).
+```{r}
+JSTmetrics$gas[JSTmetrics$gas <= 0] <- NA
+JSTmetrics$pm[JSTmetrics$pm <= 0] <- NA
+JSTmetrics$ion[JSTmetrics$ion <= 0] <- NA
+```
+
+The ```detrending_SEARCH_gm``` function can then be used to detrend each species:
+```{r}
+# individually
+JSTdetrending.gas.o3_md8a <- detrending_SEARCH_gm( n = "o3_md8a",
+                                                   x.df = JSTmetrics$gas,
+                                                   met = JSTmetrics$met,
+                                                   rf = data.frame( rainfall$ATL))
+
+summary(JSTdetrending.gas.o3_md8a)
+#      Length Class  Mode   
+# date 5840   Date   numeric
+# obs  5840   -none- numeric
+# STM  5840   -none- numeric
+# S    5840   -none- numeric
+# PS   5840   -none- numeric
+# Det  5840   -none- numeric
+# r.sq    1   -none- numeric
+```
+The result is a list with 7 objects:
+- date: a vector of dates
+- obs: osberved daily metrics input into detrending function
+- STM: short-term meteorology portion of signal
+- S: seasonal (annual) portion of signal
+- PS: photochemical state (PS from MDA8hO3 discussed in detail by Henneman et al. (2017))
+- Det: Meteorologically detrended data 
+- r.sq: R^2 fit of reconstructed signal (Table 3 in Henneman et al. (2015))
+
+The detrending can easily be run for all species and metric combinations at a single site:
+```{r}
+# all species using sapply. First, list species
+nlist.gas = colnames(JSTmetrics$gas)[-1]
+nlist.pm  = colnames(JSTmetrics$pm)[-1]
+
+JSTdetrending.gas <- sapply( nlist.gas,
+                             detrending_SEARCH_gm,
+                             x.df = JSTmetrics$gas,
+                             met = JSTmetrics$met,
+                             rf = data.frame( rainfall$ATL),
+                             simplify = F,
+                             USE.NAMES = T)
+JSTdetrending.pm <- sapply( nlist.pm,
+                             detrending_SEARCH_gm,
+                             x.df = JSTmetrics$pm,
+                             met = JSTmetrics$met,
+                             rf = data.frame( rainfall$ATL),
+                             simplify = F,
+                             USE.NAMES = T)
+
+```
+
+
+
+
+
+
+
 
 
 
