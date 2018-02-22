@@ -85,12 +85,12 @@ detrending_SEARCH_gm <- function(n,
                           start.date = start.date.site)
 
   #run MKZ detrending function for pollutant and meteorology (for all but STM)
-  x.mkz <- detrending5( x.use,
-                        year1 = start.year,
-                        log = T,
-                        raw = F,
-                        fill = F,
-                        start.date = start.date.site)
+  x.mkz <- detrend( x.use,
+                    year1 = start.year,
+                    log = T,
+                    raw = F,
+                    fill = F,
+                    start.date = start.date.site)
   met.mkz <- apply( met.use[,-which( colnames( met.use) == 'date')],
                     2,
                     detrend,
@@ -220,7 +220,7 @@ detrending_SEARCH_gm <- function(n,
                    'rh_md_p2','rf_fac_p1','rf_fac_p2')
   covars.wh <- names( coef(STM_xs))[names( coef( STM_xs)) %ni% covars.stm]
   WH_xvec <- rep( NA, length( holidays))
-  WH_xvec[covars.rmnm$days] <- c( subfit1( coef( STM_xs)[names( coef( STM_xs)) %in% covars.wh], covars.rmnm[,covars.wh]))
+  WH_xvec[covars.rmnm$days] <- c( subfitter( coef( STM_xs)[names( coef( STM_xs)) %in% covars.wh], covars.rmnm[,covars.wh]))
 
   #define STM (model fit with WH subtracted)
   STM_xvec <- rep( NA, length( holidays))
