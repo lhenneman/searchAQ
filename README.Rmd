@@ -140,17 +140,15 @@ JSTdetrending.gas.o3_md8a <- detrending_SEARCH_gm( n = "o3_mda8",
                                                    rf = data.frame( rainfall$ATL))
 
 summary(JSTdetrending.gas.o3_md8a)
-#      Length Class  Mode   
-# date 5840   Date   numeric
-# obs  5840   -none- numeric
-# STM  5840   -none- numeric
-# S    5840   -none- numeric
-# PS   5840   -none- numeric
-# Det  5840   -none- numeric
-# r.sq    1   -none- numeric
+#      Length Class      Mode   
+# data 6      data.frame list   
+# r.sq 1      -none-     numeric
+
+names(JSTdetrending.gas.o3_md8a$data)
+# [1] "date" "obs"  "STM"  "S"    "PS"   "Det" 
 ```
-The result is a list with 2 objects. The second, r.sq: R^2 fit of reconstructed 
-signal (Table 3 in Henneman et al. (2015)). The first is a data.frame with the
+The result is a list with 2 objects. The second, ```r.sq```: R^2 fit of reconstructed 
+signal (Table 3 in Henneman et al. (2015)). The first, ```data``` is a data.frame with the
 following columns:
 - date: a vector of dates
 - obs: osberved daily metrics input into detrending function
