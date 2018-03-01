@@ -18,15 +18,23 @@ read_SEARCH <- function( site,
     direc.list.complete[which( is.na( as.numeric(
       substr( list.dirs( loc.search,
                          recursive = F),
-              nchar( loc.search) + 2,
-              nchar( loc.search) + 5))) == F)])
+              nchar( list.dirs( loc.search,
+                                recursive = F)) - 3,
+              nchar( list.dirs( loc.search,
+                                recursive = F))))) == F)])
 
   #list of years taken from directory names
   years <- suppressWarnings(
-    as.numeric( substr( direc.list, nchar( loc.search) + 2, nchar( loc.search) + 5))[
+    as.numeric( substr( direc.list,
+                        nchar( list.dirs( loc.search,
+                                          recursive = F)) - 3,
+                        nchar( list.dirs( loc.search,
+                                          recursive = F))))[
       which( is.na( as.numeric( substr( direc.list,
-                                        nchar( loc.search) + 2,
-                                        nchar( loc.search) + 5))) == F)])
+                                        nchar( list.dirs( loc.search,
+                                                          recursive = F)) - 3,
+                                        nchar( list.dirs( loc.search,
+                                                          recursive = F))))) == F)])
 
   #list of files - early gas/met files are combined, later ones are split
   files.list.gm <- unique( list.files( paste( direc.list, '/GasMet', sep = ''),
