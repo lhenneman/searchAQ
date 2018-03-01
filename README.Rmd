@@ -29,7 +29,7 @@ searchAQ relies on the original file formats for SEARCH data, which change in di
 ```{r}
 JSTdata <- read_SEARCH('JST',loc.search)
 ```
-Where ```loc.serach``` is the local path of your SEARCH data (i.e., the directory that contains subdirectories named for each year). ```JSTdata``` will have the structure of a list containing hourly gas, meteorology, and ion measurements, and daily PM2.5:
+Where ```loc.search``` is the local path of your SEARCH data (i.e., the directory that contains subdirectories named for each year). ```JSTdata``` will have the structure of a list containing hourly gas, meteorology, and ion measurements, and daily PM2.5:
 
 ```{r}
 summary(JSTdata)
@@ -160,16 +160,65 @@ JSTdetrending.pm <- sapply( nlist.pm,
 ```
 
 # Ozone Production Efficiency (OPE)
-OPE is a way to estimate the impacts of NOx emissions controls on ozone concentrations, and has been estimated
+OPE is a way to estimate the impacts of NOx emissions controls on ozone concentrations, and has been estimated for stationary monitors using various approaches. ```searchAQ``` incorporates many of these as described by Henneman et al. (2018). To calculate the spline-based OPE with 3 knots and other OPE approaches at Jefferson Street (JST), for example, use:
+```{r}
+JSTope <- ope_worker( gas = JSTdetrending.gas,
+                      knk = 3,
+                      ps.perc = 0.8,
+                      rm.neg = T,
+                      name = 'JST',
+                      loc = 'urban',
+                      lat = 33.776,
+                      lon = -84.413)
+dim( JSTope)
+# [1] 863  26
 
+```
+```ope_worker``` takes many inputs:
+- ```gas```: a list object output by applying ```detrending_SEARCH_gm``` for multiple species (see example above)
+- ```knk```: number of knots for spline modeling of O3 vs. NOz (defaults to 3)
+- ```ps.perc```: percentile cutoff for atmospheric photochemistry metric. Defaults to 0.8, i.e., days with greater than the 80th percentile are used
+- ```metric.select```: one of ```'hno3_noy'``` (HNO3 / NOy), ```'ps'```, or ```'ps.low'``` for ```ps``` taken below the given ```ps.perc```.
+- ```rm.neg```: removes noz values (which are estimated using subtraction) corresponding to negatives or lower 10th percentile (see inside function). Defaults to TRUE
+- ```name```: optional. monitoring station name
+- ```loc```: optional. monitoring station location description, e.g., ```c( 'Urban', 'Rural', 'Suburban')``` 
+- ```lat```: optional. monitoring station latitude
+- ```lon```: optional. monitoring station longitude
 
+The result is a data table with 26 rows and rows totalling the number of observations that meet the criteria (here, PS higher than the 80th percentile):
+- ```date```: dates
+- ```ps```: ps
+- ```o3```: ozone
+- ```noz```: NOz
+- ```nox```: NOx
+- ```noy```: NOy
+- ```co```: CO
+- ```hno3```: HNO3
+- ```ope.lin```: linear (constant) OPE: O3 = OPE * NOz + intercept
+- ```ope.log```: log OPE: O3 = m * log( NOz) + intercept; OPE = m / NOz
+- ```ope.spl```: spline OPE, OPE derived from slope of spine form
+- ```ope.lm.yr```: OPE by year as slope of daily O3 vs NOz in each year
+- ```ope.lims.low```: spline OPE 97.5% confidence interval derived from MCMC sampling
+- ```ope.lims.high```: spline OPE 2.5% confidence interval derived from MCMC sampling
+- ```fit.lin```: O3 as simulated with the linear model
+- ```fit.log```: O3 as simulated with the log model
+- ```fit.spl```: O3 as simulated with the spline model
+- ```eqn.log```: equation used to fit the log model
+- ```spl.int```: string. intercept from the spline model (taken by Henneman et al. 2018 as the regional background ozone concentration)
+- ```spl.int.n```: numeric. intercept from the spline model (taken by Henneman et al. 2018 as the regional background ozone concentration)
+- ```name```: station name
+- ```loc```: station location description taken from function inputs
+- ```lat```: station latitude taken from function inputs
+- ```lon```: station latitude taken from function inputs
+- ```x.eqn```: numeric. equation location for plotting.
+- ```y.eqn```: numeric. equation location for plotting.
 
 # References
 Henneman, Lucas RF, Heather A Holmes, James A Mulholland, and Armistead G Russell. 2015. “Meteorological Detrending of Primary and Secondary Pollutant Concentrations: Method Application and Evaluation Using Long-Term (2000-2012) Data in Atlanta.” Atmospheric Environment 119. Elsevier Ltd: 201–10. doi:10.1016/j.atmosenv.2015.08.007.
 
 Henneman, Lucas RF, Howard H Chang, David Lavoue, James A Mulholland, and Armistead G Russell. 2017. “Accountability Assessment of Regulatory Impacts on Ozone and PM2.5 Concentrations Using Statistical and Deterministic Pollutant Sensitivities.” Air Quality Atmosphere and Health 10 (6): 695–711. doi:10.1007/s11869-017-0463-2.
 
-
+Henneman, Lucas RF, Huizhong Shen, Cong Liu, Yongtao Hu, James A Mulholland, and Armistead G Russell. 2018. “Responses in Ozone and Its Production Efficiency Attributable to Recent and Future Emissions Changes in the Eastern United States.” Environmental Science & Technology 2017 51 (23), 13797-13805. DOI: 10.1021/acs.est.7b04109.
 
 
 
