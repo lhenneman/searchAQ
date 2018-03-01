@@ -213,6 +213,44 @@ The result is a data table with 26 rows and rows totalling the number of observa
 - ```x.eqn```: numeric. equation location for plotting.
 - ```y.eqn```: numeric. equation location for plotting.
 
+OPE results can easily be visualized. The following code reproduces the Jefferson Street (JST) panel of Figure 1 in Henneman et al. (2017):
+```{r}
+ggplot( data = JSTope,
+        aes( x = noz,
+             y = o3,
+             colour = ope.spl)) +
+  geom_point( size = .75) +
+  geom_line( aes( y = fit.spl),
+             color = 'black') +
+  geom_label(aes( x = x.eqn,
+                  y = y.eqn,
+                  label = spl.int),
+             parse = FALSE,
+             inherit.aes = F,
+             size = 7,
+             show.legend = F) +
+  scale_colour_gradientn( colours = c( 'orange', 'green', 'blue'),
+                          name = 'OPE') +
+  guides( color = guide_colourbar( title.position = 'left')) +
+  ylab( 'Ozone, ppb') +
+  xlab( 'NOz, ppb') +
+  expand_limits( x = 0,
+                 y = 0) +
+  theme_bw() +
+  theme(axis.text = element_text( size=14),
+        axis.title = element_text( size=16),
+        legend.background = element_rect(),
+        legend.direction = 'horizontal',
+        legend.position = 'bottom',
+        legend.text = element_text( size = 11),
+        legend.title = element_text( size = 12),
+        strip.text = element_text( size = 16),
+        plot.title = element_text( size = 20),
+        strip.background = element_rect( fill='white'))
+```
+![Alt text](figures/JST_Figure1_Hennemanetal2017.png)
+
+
 # References
 Henneman, Lucas RF, Heather A Holmes, James A Mulholland, and Armistead G Russell. 2015. “Meteorological Detrending of Primary and Secondary Pollutant Concentrations: Method Application and Evaluation Using Long-Term (2000-2012) Data in Atlanta.” Atmospheric Environment 119. Elsevier Ltd: 201–10. doi:10.1016/j.atmosenv.2015.08.007.
 
