@@ -17,13 +17,13 @@ ope_worker <- function(gas,
                        lon = ''){
 
   #extract appropriate data
-  date <- gas$o3_2p$date
-  ps   <- gas$o3_2p$PS
-  o3   <- gas$o3_2p$obs
-  co   <- gas$co_2p$obs
-  nox  <- gas$nox_2p$obs
-  noy  <- gas$noy_2p$obs
-  hno3 <- gas$hno3_2p$obs
+  date <- gas$o3_2p$data$date
+  ps   <- gas$o3_2p$data$PS
+  o3   <- gas$o3_2p$data$obs
+  co   <- gas$co_2p$data$obs
+  nox  <- gas$nox_2p$data$obs
+  noy  <- gas$noy_2p$data$obs
+  hno3 <- gas$hno3_2p$data$obs
   noz  <- noy - nox
   if(rm.neg==T) noz[noz <= quantile( noz,
                                      na.rm = T,
@@ -62,8 +62,8 @@ ope_worker <- function(gas,
                         x = noz.use)
 
   #calculate ope using splines
-  spline.ope <- make_splineOPE( o3.use,
-                                noz.use,
+  spline.ope <- make_splineOPE( y = o3.use,
+                                x = noz.use,
                                 nk = knk)
 
   #calculate ope 95% confidence interval for OPE at each noz concentration
@@ -76,9 +76,8 @@ ope_worker <- function(gas,
   basis <- spline.ope$base
 
   #run models for each intercept sample
-  OPE.samps <- sapply( cl,
-                       int.sim,
-                       deriv.int,
+  OPE.samps <- sapply( int.sim,
+                       deriv_int,
                        noz.use,
                        o3.use,
                        basis)
@@ -100,6 +99,7 @@ ope_worker <- function(gas,
   #calculate ope using lineal models - fit model by year
   ope.lm.years <- unlist( sapply(years,
                                  ope_lm_wrapper,
+                                 dates = date.use,
                                  simplify = T))
 
   #create output data frame
