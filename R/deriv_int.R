@@ -2,7 +2,10 @@
 #function to get derivative with different intercepts
 #	nk is number of knots
 #	int is assigned intercept
-deriv_int <- function(int,x,y,basis){
+deriv_int <- function(int,
+                      x,
+                      y,
+                      basis){
   form <- reformulate( termlabels = c( 'basis',
                                        'offset(rep(int,length(y)))'),
                        response = 'y',
