@@ -13,6 +13,7 @@ ope_lm_wrapper <- function( year,
                             y,
                             x,
                             dates){
+
   find.date <- grep( year, dates)
 
   date.use.year <- dates[find.date]
