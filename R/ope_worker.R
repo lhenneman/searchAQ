@@ -139,6 +139,8 @@ ope_worker <- function(gas,
   #calculate ope using lineal models - fit model by year
   ope.lm.years <- unlist( sapply(years,
                                  ope_lm_wrapper,
+                                 y = o3.use,
+                                 x = noz.use,
                                  dates = date.use,
                                  simplify = T))
 

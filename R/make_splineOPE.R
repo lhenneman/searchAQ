@@ -1,4 +1,21 @@
-#function to estimate OPE using spline function - no equation included (yet)
+#' estimate OPE using spline function
+#'
+#' \code{make_splineOPE} takes as input two vectors (```x``` and ```y```) and the number of knots, calculates spline
+#' model fits and equation in R format. This function is called by the ```ope_worker``` function.
+#'
+#' @param y response variable. In this use, often ozone
+#' @param x independent variable. In this use, often NOz
+#' @param nk number of knots in the spline function
+#' @return This function returns a list with the following items:
+#' #'\enumerate{
+#'   \item x independent variable
+#'   \item ope spline-derived OPE (the slope)
+#'   \item fit spline-derived fit
+#'   \item intercept.txt intercept as string
+#'   \item base basis functions included in spline model
+#'   \item intercept intercept as numeric
+#'   \item model.int model intercept
+#'}
 make_splineOPE <- function(y,
                            x,
                            nk){

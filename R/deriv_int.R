@@ -1,7 +1,15 @@
-
-#function to get derivative with different intercepts
-#	nk is number of knots
-#	int is assigned intercept
+#' get derivative of spline model fit with different intercepts
+#'
+#' \code{make_splineOPE} takes as input an assigned intercept, two vectors (```x``` and ```y```), and
+#' basis functions of a spline fit, and calculates spline
+#' model fits and equation in R format. This function is called by the ```ope_worker``` function.
+#'
+#' @param int assigned intercept
+#' @param y response variable. In this use, often ozone
+#' @param x independent variable. In this use, often NOz
+#' @param base basis functions included in spline model (e.g., from ```make_splineOPE``` function)
+#' @return This function returns avector of OPE's from the calculated spline fit
+#'
 deriv_int <- function(int,
                       x,
                       y,

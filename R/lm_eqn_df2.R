@@ -1,4 +1,11 @@
-#labeling function for equation (and calculate linear & log OPEs)
+#' labeling function for equation (and calculate linear & log OPEs)
+#'
+#' \code{lm_eqn_df2} takes as input two vectors (```x``` and ```y```), calculates linear and log linear
+#' model fits and equation in R format. This function is called by the ```ope_worker``` function.
+#'
+#' @param y response variable. In this use, often ozone
+#' @param x independent variable. In this use, often NOz
+#' @return This function returns a list with the log equation, and linear and log OPEs and fits (predicted ozone)
 lm_eqn_df2 = function(y,
                       x){
   noz.use[noz.use <= 0] = NA
