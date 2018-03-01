@@ -46,14 +46,6 @@
 #'   \item y.eqn numeric. equation location for plotting.
 #' }
 
-#==================================================#
-#plot O3 vs. NOz for all pollutants for days with high PS
-#==================================================#
-
-#function that gets O3 and NOz for high-PS days, estimates OPE using log method
-#	ps.perc is the PS percentile
-#	rm.neg removes noz values (which are estimated using subtraction) corresponding
-#		to negatives or lower 10th percentile (see inside function)
 ope_worker <- function(gas,
                        knk = 3,
                        metric.select = 'ps',
