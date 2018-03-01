@@ -1,8 +1,9 @@
 #calculate ope using lineal models - fit model by year
-ope_lm_wrapper <- function( year){
-  find.date <- grep( year,date.use)
+ope_lm_wrapper <- function( year,
+                            dates){
+  find.date <- grep( year, dates)
 
-  date.use.year <- date[find.date]
+  date.use.year <- dates[find.date]
   o3.use.year <- o3.use[find.date]
   noz.use.year <- noz.use[find.date]
   if ( length( which( is.na( noz.use.year) == F)) == 0) {
