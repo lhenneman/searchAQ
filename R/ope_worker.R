@@ -1,3 +1,51 @@
+#' stratify input by photochemistry metric and calculate OPE
+#'
+#' \code{ope_worker} takes as input a list of daily gas and meteorology
+#' species metrics (e.g., from the \code{detrending_SEARCH_gm} function) and outputs a data.frame
+#' of multiple OPE calculations, intercepts, and other information for the set of days that match the
+#' criteria for photochemical state
+#'
+#' @param gas list of daily gaseous species metrics (specifically including the 2p metric). E.g., from the
+#'   \code{detrending_SEARCH_gm} function
+#' @param knk number of knots for spline modeling of O3 vs. NOz (defaults to 3)
+#' @param ps.perc percentile cutoff for atmospheric photochemistry metric. Defaults to 0.8, i.e., days with greater than the 80th percentile are used
+#' @param metric.select one of ```'hno3_noy'``` (HNO3 / NOy), ```'ps'```, or ```'ps.low'``` for ```ps``` taken below the given ```ps.perc```.
+#' @param rm.neg removes noz values (which are estimated using subtraction) corresponding to negatives or lower 10th percentile (see inside function). Defaults to TRUE
+#' @param name optional. monitoring station name
+#' @param loc optional. monitoring station location description, e.g., ```c( 'Urban', 'Rural', 'Suburban')```
+#' @param lat optional. monitoring station latitude
+#' @param lon optional. monitoring station longitude
+#' @return This function returns a data.frame of length equal to number of days that meet photochemical state criteria with the following columns:
+#' #'\enumerate{
+#'   \item mda8 - mean daily 8 hr average
+#'   \item date dates
+#'   \item ps ps
+#'   \item o3 ozone
+#'   \item noz NOz
+#'   \item nox NOx
+#'   \item noy NOy
+#'   \item co CO
+#'   \item hno3 HNO3
+#'   \item ope.lin linear (constant) OPE: O3 = OPE * NOz + intercept
+#'   \item ope.log log OPE: O3 = m * log( NOz) + intercept; OPE = m / NOz
+#'   \item ope.spl spline OPE: OPE derived from slope of spine form
+#'   \item ope.lm.yr OPE by year as slope of daily O3 vs NOz in each year
+#'   \item ope.lims.low spline OPE 97.5% confidence interval derived from MCMC sampling
+#'   \item ope.lims.high spline OPE 2.5% confidence interval derived from MCMC sampling
+#'   \item fit.lin O3 as simulated with the linear model
+#'   \item fit.log O3 as simulated with the log model
+#'   \item fit.spl O3 as simulated with the spline model
+#'   \item eqn.log equation used to fit the log model
+#'   \item spl.int string. intercept from the spline model (taken by Henneman et al. 2018 as the regional background ozone concentration)
+#'   \item spl.int.n numeric. intercept from the spline model (taken by Henneman et al. 2018 as the regional background ozone concentration)
+#'   \item name station name
+#'   \item loc station location description taken from function inputs
+#'   \item lat station latitude taken from function inputs
+#'   \item lon station latitude taken from function inputs
+#'   \item x.eqn numeric. equation location for plotting.
+#'   \item y.eqn numeric. equation location for plotting.
+#' }
+
 #==================================================#
 #plot O3 vs. NOz for all pollutants for days with high PS
 #==================================================#
