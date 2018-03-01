@@ -1,17 +1,13 @@
 # ```searchAQ```
 
-```searchAQ``` is an R package that includes utility to read in SEARCH air quality network data
-in its original format and combine it into consistent lists and data frames. Other included 
-functions perform detrending and calculate photochemical state from observations.
+```searchAQ``` is an R package that includes utility to read in SEARCH air quality network data in its original format and combine it into consistent lists and data frames. Other included functions perform detrending, and calculate photochemical state and ozone production efficiency (OPE) from observations.
 
 # Getting started
-Download all SEARCH data from Dropbox, using one of these two links (the first
-is still hosted by ARA, the second is hosted on my own Dropbox):
+Download all SEARCH data from Dropbox, using one of these two links (the first is still hosted by ARA, the second is hosted on my own Dropbox):
 1) https://www.dropbox.com/sh/o9hxoa4wlo97zpe/AACbm6LetQowrpUgX4vUxnoDa?dl=0
 2) https://www.dropbox.com/sh/1tsdqdmiwixbgfd/AACxwbKilNVbC52H1VH4geJma?dl=0
 
-Download the entire directory, maintaining the original structure.
-You should end up with a single SEARCH directory with subdirectories named for each year.
+Download the entire directory, maintaining the original structure. You should end up with a single SEARCH directory with subdirectories named for each year.
 
 ### Install ```searchAQ```
 In R or RStudio, install the ```searchAQ``` R package from github.  
@@ -29,16 +25,11 @@ library(searchAQ)
 ```
 
 # Importing the data
-searchAQ relies on the original file formats for SEARCH data, which change 
-in different years (2008, for example, saw a big change in file format).
-For Jefferson Street, for example:
+searchAQ relies on the original file formats for SEARCH data, which change in different years (2008, for example, saw a big change in file format). For Jefferson Street, for example:
 ```{r}
 JSTdata <- read_SEARCH('JST',loc.search)
 ```
-Where ```loc.serach``` is the local path of your SEARCH data (i.e., the directory
-that contains subdirectories named for each year).
-```JSTdata``` will have the structure of a list containing hourly
-gas, meteorology, and ion measurements, and daily PM2.5:
+Where ```loc.serach``` is the local path of your SEARCH data (i.e., the directory that contains subdirectories named for each year). ```JSTdata``` will have the structure of a list containing hourly gas, meteorology, and ion measurements, and daily PM2.5:
 
 ```{r}
 summary(JSTdata)
@@ -61,8 +52,7 @@ summary(JSTdata$gas[, 1:4])
 ```
 
 # Creating daily metrics
-The ```metrics_worker``` utility calculates daily metrics from hourly concentrations.
-For example,
+The ```metrics_worker``` utility calculates daily metrics from hourly concentrations. For example,
 ```{r}
 o3_md8a <- metrics_worker( x = JSTdata$gas$o3, 
                            metric = 'mda8', 
@@ -80,8 +70,7 @@ summary( o3_md8a)
 #                      NA's   :80         
 ```
 
-The ```metric``` option in ```metrics_worker``` has multiple potential values corresponding to 
-potentially useful daily metrics (more can be added later):
+The ```metric``` option in ```metrics_worker``` has multiple potential values corresponding to potentially useful daily metrics (more can be added later):
 - 'mda8' - maximum daily 8 hr average
 - 'afternoon' - mean of hourly values from 11am-7pm
 - 'sum' - sum of hourly values
@@ -90,8 +79,7 @@ potentially useful daily metrics (more can be added later):
 - 'max' - 24h maximum
 - '2p' - 2pm hourly value
 
-```dailymetrics_SEARCH_gm``` is a built in function to calculate various daily metrics of all of the
-species included in output from ```read_SEARCH```
+```dailymetrics_SEARCH_gm``` is a built in function to calculate various daily metrics of all of the species included in output from ```read_SEARCH```
 ```{r}
 JSTmetrics <- dailymetrics_SEARCH_gm( JSTdata)
 
@@ -104,18 +92,13 @@ summary( JSTmetrics)
 ```
 
 # Detrending
-```searchAQ``` contains functions that allow for the detrending of SEARCH data (and potentially
-other daily data) using the methods described in Henneman et al. (2015). Splitting into 
-detrending components is acheived using the ```detrending_SEARCH_gm``` function. 
+```searchAQ``` contains functions that allow for the detrending of SEARCH data (and potentially other daily data) using the methods described in Henneman et al. (2015). Splitting into detrending components is acheived using the ```detrending_SEARCH_gm``` function. 
 
-First, however, rainfall data needs to be downloaded and included. Potential future functionality
-could include the option to detrend without some variables, but these are all needed for now.
+First, however, rainfall data needs to be downloaded and included. Potential future functionality could include the option to detrend without some variables, but these are all needed for now.
 
 ### Download and read in rainfall data
 
-Airport rainfall data in the correct format can be downloaded here: 
-https://www.ncdc.noaa.gov/cdo-web/orders?email=lhenneman@gmail.com&id=875479 (click RESUBMIT).
-```input_NCDC_CDO_rf``` can then be used to read and format the data for detrending:
+Airport rainfall data in the correct format can be downloaded here: https://www.ncdc.noaa.gov/cdo-web/orders?email=lhenneman@gmail.com&id=875479 (click RESUBMIT). ```input_NCDC_CDO_rf``` can then be used to read and format the data for detrending:
 
 ```{r}
 rainfall <- input_NCDC_CDO_rf(file.rf)
@@ -124,8 +107,7 @@ rainfall <- input_NCDC_CDO_rf(file.rf)
 Where ```file.rf``` is the path of the rainfall file downloaded from NCDC.
 
 ### Do the detrending
-First, it is recommended to discard all values of species metrics that are below zero
-(alternatively, you may decide to use some sort of filling procedure for these values).
+First, it is recommended to discard all values of species metrics that are below zero (alternatively, you may decide to use some sort of filling procedure for these values).
 ```{r}
 JSTmetrics$gas[JSTmetrics$gas <= 0] <- NA
 JSTmetrics$pm[JSTmetrics$pm <= 0] <- NA
@@ -147,9 +129,7 @@ summary(JSTdetrending.gas.o3_md8a)
 names(JSTdetrending.gas.o3_md8a$data)
 # [1] "date" "obs"  "STM"  "S"    "PS"   "Det" 
 ```
-The result is a list with 2 objects. The second, ```r.sq```: R^2 fit of reconstructed 
-signal (Table 3 in Henneman et al. (2015)). The first, ```data``` is a data.frame with the
-following columns:
+The result is a list with 2 objects. The second, ```r.sq```: R^2 fit of reconstructed signal (Table 3 in Henneman et al. (2015)). The first, ```data``` is a data.frame with the following columns:
 - date: a vector of dates
 - obs: osberved daily metrics input into detrending function
 - STM: short-term meteorology portion of signal
@@ -157,8 +137,7 @@ following columns:
 - PS: photochemical state (PS from MDA8hO3 discussed in detail by Henneman et al. (2017))
 - Det: Meteorologically detrended data 
 
-The detrending can easily be run for all species and metric combinations at a single site
-using ```sapply```:
+The detrending can easily be run for all species and metric combinations at a single site using ```sapply```:
 ```{r}
 nlist.gas = colnames(JSTmetrics$gas)[-1]
 nlist.pm  = colnames(JSTmetrics$pm)[-1]
@@ -179,6 +158,10 @@ JSTdetrending.pm <- sapply( nlist.pm,
                              USE.NAMES = T)
 
 ```
+
+# Ozone Production Efficiency (OPE)
+OPE is a way to estimate the impacts of NOx emissions controls on ozone concentrations, and has been estimated
+
 
 
 # References
