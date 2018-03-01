@@ -1,5 +1,7 @@
 #function to estimate OPE using spline function - no equation included (yet)
-make_splineOPE <- function(y,x,nk){
+make_splineOPE <- function(y,
+                           x,
+                           nk){
   #grab model fit vector
   basis <- rcs( x, nk)
   form <- reformulate( termlabels = c('basis'),
