@@ -12,7 +12,10 @@ Depends:
     gdata,
     kza,
     lubridate,
+    MASS,
     plyr,
+    stringr,
     timeDate,
+    rms,
     units,
     zoo
