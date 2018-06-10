@@ -8,7 +8,7 @@
 #' @return This function returns a list with the log equation, and linear and log OPEs and fits (predicted ozone)
 lm_eqn_df2 = function(y,
                       x){
-  noz.use[noz.use <= 0] = NA
+  x[x <= 0] = NA
   m = lm( y ~ log(x), na.action = 'na.exclude')
   m.lin = lm(y ~ x, na.action = 'na.exclude');
   l <- list( a = format( abs( coef( m)[1]), digits = 2),
