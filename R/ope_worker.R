@@ -65,9 +65,10 @@ ope_worker <- function(gas,
   noy  <- gas$noy_2p$data$obs
   hno3 <- gas$hno3_2p$data$obs
   noz  <- noy - nox
-  if(rm.neg==T) noz[noz <= quantile( noz,
-                                     na.rm = T,
-                                     probs = 0.1)] <- NA
+  if(rm.neg==T)
+    noz[noz <= quantile( noz,
+                         na.rm = T,
+                         probs = 0.1)] <- NA
 
   #select which ps are greater than percentile (new: option for using HNO3/NOy)
   if ( metric.select == 'hno3_noy'){
