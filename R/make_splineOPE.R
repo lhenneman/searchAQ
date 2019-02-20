@@ -33,7 +33,7 @@ make_splineOPE <- function(y,
 
   #t represents the function in a string, so we
   #	need to extract the various peices
-  t <- capture.output( Function( model))[1]
+  t <- paste0( capture.output( Function( model)), collapse = '')
 
   #intercept - not used in the derivative, but good to have
   intercept <- str_extract( t, '[0-9]+\\.[0-9]+')
