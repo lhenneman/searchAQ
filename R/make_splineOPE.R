@@ -33,7 +33,9 @@ make_splineOPE <- function(y,
 
   #t represents the function in a string, so we
   #	need to extract the various peices
+  # remove all spaces from t for consistency across platforms
   t <- paste0( capture.output( Function( model)), collapse = '')
+  t <- gsub( ' ', '', t)
 
   #intercept - not used in the derivative, but good to have
   intercept <- str_extract( t, '[0-9]+\\.[0-9]+')
@@ -53,7 +55,7 @@ make_splineOPE <- function(y,
   #remove the linear portion, extract the knot coefficients
   t.rem.linear <- sub( paste( '\\',
                               linear,
-                              '..x',
+                              '\\*x',
                               sep = ''),
                        "", t.rem.intercept, perl=T)
 
